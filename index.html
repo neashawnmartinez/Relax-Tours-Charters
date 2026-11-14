@@ -85,7 +85,7 @@ footer h4{color:#fff;margin:0 0 12px;font-size:16px}footer ul{list-style:none;ma
 @media(max-width:420px){.logo span{display:none}}
 .card ul{margin:0 0 12px;padding-left:18px;font-size:14px}.card details{font-size:14px;border-top:1px solid var(--line);padding-top:10px}.card summary{cursor:pointer;font:600 14px Oswald;letter-spacing:.05em;text-transform:uppercase;color:var(--teal)}.card details ol{padding-left:18px;margin:8px 0 0}
 .bk{grid-template-columns:1fr 1fr}.bk .w{grid-column:1/-1}.bk label{display:grid;gap:5px;font:600 13px 'Open Sans'}.bk select{width:100%;min-width:0}.bk input,.bk textarea{min-width:0}
-.pay{border:2px solid var(--line);padding:12px 16px;display:grid;gap:8px}.pay legend{font:600 13px 'Open Sans';padding:0 6px}.pay label{display:flex;gap:10px;align-items:center;font-weight:400}.bk .pay input{width:auto;flex:none;min-width:0}
+.pay{border:2px solid var(--line);padding:12px 16px;display:grid;gap:8px}.pay legend{font:600 13px 'Open Sans';padding:0 6px}.pay label{display:flex;gap:10px;align-items:center;font-weight:400}.bk .pay input{width:auto;flex:none;min-width:0}.pinfo{border-left:4px solid var(--teal);background:var(--alt);padding:12px 16px;font-size:15px;text-align:left;margin-bottom:14px}.pinfo p{margin:0 0 6px}.pinfo ol{margin:6px 0 10px;padding-left:20px;list-style:decimal}.pinfo li{margin:2px 0;display:list-item}
 @media(max-width:640px){.bk{grid-template-columns:1fr}}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:34px 0}@media(max-width:800px){.steps{grid-template-columns:1fr 1fr}}@media(max-width:520px){.steps{grid-template-columns:1fr}}
 .steps div{text-align:center}.steps i{display:grid;place-items:center;width:52px;height:52px;margin:0 auto 10px;border-radius:50%;background:var(--teal);color:#fff;font:700 24px Oswald;font-style:normal}.steps h4{margin:0 0 4px;color:var(--teal);font-size:18px}.steps p{margin:0;font-size:14px}
@@ -161,7 +161,7 @@ footer h4{color:#fff;margin:0 0 12px;font-size:16px}footer ul{list-style:none;ma
 
 <section class="alt" id="howto"><div class="wrap">
 <p class="eyebrow">Easy Booking</p><h2>How to book</h2><p class="lead">Booking takes about two minutes. Just follow the four steps below. If you would rather talk to someone, call or WhatsApp us.</p>
-<div class="steps"><div><i>1</i><h4>Choose your tour</h4><p>Pick a tour and the date you want.</p></div><div><i>2</i><h4>Tell us about your group</h4><p>Name, age, number of guests, allergies and food preferences.</p></div><div><i>3</i><h4>Choose how to pay</h4><p>Pay online with the banking system, or pay on the day.</p></div><div><i>4</i><h4>Get your confirmation</h4><p>You receive a booking reference and we contact you to confirm.</p></div></div>
+<div class="steps"><div><i>1</i><h4>Choose your tour</h4><p>Pick a tour and the date you want.</p></div><div><i>2</i><h4>Tell us about your group</h4><p>Name, age, number of guests, allergies and food preferences.</p></div><div><i>3</i><h4>Choose how to pay</h4><p>Pay online with the banking system, or pay in cash on the day. Tour prices are negotiable.</p></div><div><i>4</i><h4>Get your confirmation</h4><p>You receive a booking reference and we contact you to confirm.</p></div></div>
 <div class="ct center"></div></div></section>
 
 <section id="book"><div class="wrap" style="max-width:860px">
@@ -173,12 +173,12 @@ footer h4{color:#fff;margin:0 0 12px;font-size:16px}footer ul{list-style:none;ma
 <label>Your full name<input name="name" required autocomplete="name"></label>
 <label>Your age<input type="number" name="age" min="1" max="110" required></label>
 <label>Number of guests<input type="number" name="guests" min="1" max="30" value="2" required></label>
-<label>Phone / WhatsApp<input type="tel" name="phone" required autocomplete="tel"></label>
+<label>Phone / WhatsApp<input type="tel" name="phone" required autocomplete="tel" pattern="[0-9+\-\(\) ]{7,20}" title="Enter a valid phone number, for example +501 636-3272"></label>
 <label class="w">Email<input type="email" name="email" required autocomplete="email"></label>
 <label class="w">Allergies<input name="allergies" placeholder="For example: shellfish, nuts. Write “none” if there are none"></label>
 <label class="w">Food preferences<input name="food" placeholder="For example: vegetarian, no pork, kids’ meals"></label>
 <label class="w">Anything else we should know?<textarea name="notes" rows="3"></textarea></label>
-<fieldset class="w pay"><legend>How would you like to pay?</legend><label><input type="radio" name="pay" value="Online payment (banking system)" checked> Pay online (banking system)</label><label><input type="radio" name="pay" value="Pay on the day"> Pay on the day of the tour</label></fieldset>
+<fieldset class="w pay"><legend>How would you like to pay?</legend><label><input type="radio" name="pay" value="Online payment (banking system)" checked> Pay online (banking system)</label><label><input type="radio" name="pay" value="Pay on the day (cash)"> Pay on the day of the tour (cash)</label><div id="pinfo" aria-live="polite"></div></fieldset>
 <button class="btn w">Request My Booking</button></form>
 </div></section>
 
@@ -246,6 +246,11 @@ bd.min=new Date().toISOString().slice(0,10);
 function book(t){if(t)bt.value=t;location.hash='book'}
 document.querySelectorAll('.ct').forEach(c=>{const cl=(u,ic,tx)=>`<a href="${u}"><img src="images/${ic}.png" alt="" width="28" height="28"><span>${tx}</span></a>`;c.innerHTML=cl('tel:'+CFG.phone.replace(/\s/g,''),'phone',CFG.phone)+cl('https://wa.me/'+CFG.wa,'wa','WhatsApp')+(CFG.email?cl('mailto:'+CFG.email,'mail',CFG.email):'')});
 async function mail(subject,data){if(!CFG.email)return false;try{const r=await fetch('https://formsubmit.co/ajax/'+CFG.email,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({_subject:subject,_template:'table',_captcha:'false',...data})});return r.ok}catch(_){return false}}
+const PAY={online:{t:'Paying online (banking system)',s:['We contact you to confirm your booking and agree the final price.','We send the online payment details with your confirmation.','You pay through the banking system and quote {ref}.']},
+cash:{t:'Paying in cash on the day',s:['We contact you to confirm your booking and agree the final price.','On the day of the tour, meet your captain at the dock.','You pay the agreed amount in cash and quote {ref}.']}};
+const payBox=(v,ref)=>{const p=PAY[v.startsWith('Online')?'online':'cash'];return `<div class="pinfo"><p><b>${p.t}</b></p><ol>${p.s.map(x=>`<li>${x.replace('{ref}',ref?'booking reference '+ref:'your booking reference')}</li>`).join('')}</ol><p><b>Tour prices are negotiable.</b> The final price is agreed with us when we confirm your booking.</p></div>`};
+function showPay(){pinfo.innerHTML=payBox(bk.pay.value)}
+document.querySelectorAll('input[name=pay]').forEach(r=>r.onchange=showPay);showPay();
 let last=null;
 const waL=t=>'https://wa.me/'+CFG.wa+'?text='+encodeURIComponent(t),emL=(s,t)=>'mailto:'+CFG.email+'?subject='+encodeURIComponent(s)+'&body='+encodeURIComponent(t);
 const newB='<button class="btn o" type="button" onclick="done.innerHTML=\'\';bk.scrollIntoView({behavior:\'smooth\'})">Make Another Booking</button>';
@@ -254,7 +259,7 @@ const d=Object.fromEntries(new FormData(bk)),ref='RTC-'+Date.now().toString(36).
 const L=[['Reference',ref],['Tour',d.tour],['Date',d.date],['Guests',d.guests],['Name',d.name],['Age',d.age],['Phone / WhatsApp',d.phone],['Email',d.email],['Allergies',d.allergies||'None'],['Food preferences',d.food||'None'],['Payment',d.pay],['Notes',d.notes||'-']];
 const sent=await mail('New booking '+ref,{_cc:d.email,reference:ref,...d});last={d,ref};
 const txt='New booking request\n'+L.map(x=>x.join(': ')).join('\n');
-done.innerHTML=`<div class="done"><h3>Thank you, ${esc(d.name)}!</h3><p><b>Booking reference: ${ref}</b></p><p>${sent?'Your booking request was emailed to our team, and a copy was sent to '+esc(d.email)+'. We will contact you shortly to confirm.':'Almost done: please send your details to us by WhatsApp or email so we can confirm your booking.'}</p><dl>${L.slice(1,11).map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>${d.pay.startsWith('Online')?`<p>${CFG.pay?'':'We will send the online payment details with your confirmation.'}</p>${CFG.pay?`<a class="btn" href="${CFG.pay}">Pay Online Now</a> `:''}`:''}${sent?'':`<a class="btn" href="${waL(txt)}" target="_blank" rel="noopener">Send on WhatsApp</a> <a class="btn" href="${emL('Booking '+ref,txt)}">Send by Email</a> `}<div class="acts"><a class="btn o" href="#home">Back to Home</a>${newB}<button class="btn o" type="button" onclick="print()">Print / Save</button></div><p id="cx" class="cx">Changed your mind? <button type="button" onclick="askCancel()">Cancel this booking</button></p></div>`;
+done.innerHTML=`<div class="done"><h3>Thank you, ${esc(d.name)}!</h3><p><b>Booking reference: ${ref}</b></p><p>${sent?'Your booking request was emailed to our team, and a copy was sent to '+esc(d.email)+'. We will contact you shortly to confirm.':'Almost done: please send your details to us by WhatsApp or email so we can confirm your booking.'}</p><dl>${L.slice(1,11).map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>${payBox(d.pay,ref)}${d.pay.startsWith('Online')&&CFG.pay?`<a class="btn" href="${CFG.pay}">Pay Online Now</a> `:''}${sent?'':`<a class="btn" href="${waL(txt)}" target="_blank" rel="noopener">Send on WhatsApp</a> <a class="btn" href="${emL('Booking '+ref,txt)}">Send by Email</a> `}<div class="acts"><a class="btn o" href="#home">Back to Home</a>${newB}<button class="btn o" type="button" onclick="print()">Print / Save</button></div><p id="cx" class="cx">Changed your mind? <button type="button" onclick="askCancel()">Cancel this booking</button></p></div>`;
 bk.reset();btn.disabled=false;btn.textContent='Request My Booking';done.scrollIntoView({behavior:'smooth'})};
 function askCancel(){cx.innerHTML='Cancel booking <b>'+last.ref+'</b>? <button type="button" onclick="doCancel()">Yes, cancel it</button> <button type="button" onclick="done.querySelector(\'#cx\').innerHTML=\'Booking kept.\'">No, keep it</button>'}
 async function doCancel(){cx.textContent='Cancelling…';const t='CANCEL booking '+last.ref+' ('+last.d.name+', '+last.d.tour+', '+last.d.date+', phone '+last.d.phone+')';
